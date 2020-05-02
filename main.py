@@ -1,5 +1,5 @@
 import util
-import knnwithmeans
+import proposedmethods
 from surprise import KNNWithMeans
 from surprise import KNNBasic
 from surprise.model_selection import KFold
@@ -9,9 +9,9 @@ import pandas as pd
 
 import random
 
-my_seed = 100
-random.seed(my_seed)
-np.random.seed(my_seed)
+# my_seed = 100
+# random.seed(my_seed)
+# np.random.seed(my_seed)
 
 from surprise.model_selection import cross_validate
 from surprise.model_selection import train_test_split
@@ -35,8 +35,9 @@ print(len(data1.item_weight))
 
 user_based = True  # changed to False to do item-absed CF
 sim_options = {'name': 'pearson', 'user_based': user_based}
-algo = knnwithmeans.KNNWithMeans(data1, sim_options=sim_options)
+algo = proposedmethods.OurMethod(data1, sim_options=sim_options)
 # algo = KNNWithMeans(sim_options=sim_options)
+# algo = KNNBasic(sim_options=sim_options)
 cross_validate(algo, data1, measures=['RMSE', 'MAE'], cv=5, verbose=True)
 # # # Train the algorithm on the trainset, and predict ratings for the testset
 # algo.fit(trainset)
