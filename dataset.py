@@ -271,6 +271,10 @@ class Dataset:
                             raw2inner_id_users,
                             raw2inner_id_items)
 
+        if self.item_weight is not None:
+            trainset.user_weight = self.user_weight
+            trainset.item_weight = self.item_weight 
+            trainset.all_user_means =  self.all_user_means
         return trainset
 
     def construct_testset(self, raw_testset):
@@ -304,6 +308,9 @@ class DatasetAutoFolds(Dataset):
 
         Dataset.__init__(self, reader)
         self.has_been_split = False  # flag indicating if split() was called.
+        self.user_weight = None
+        self.item_weight = None
+        self.all_user_means = None
 
         if ratings_file is not None:
             self.ratings_file = ratings_file
@@ -312,7 +319,7 @@ class DatasetAutoFolds(Dataset):
                 self.item_df = item_df
             if category_list is not None:
                 self.category_list = category_list
-            self.raw_ratings_with_weights = None
+            
             user_weight, item_weight, all_user_means = self.get_allusers_weights_and_means()
             self.user_weight = user_weight
             self.item_weight = item_weight
